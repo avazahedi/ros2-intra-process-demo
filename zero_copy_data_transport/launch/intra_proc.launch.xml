@@ -1,0 +1,22 @@
+<launch>
+    <arg name="image_path" default="1920x1080.png"/>
+    <arg name="log_to_console" default="false"/>
+    <arg name="log_to_csv" default="false"/>
+
+    <node_container pkg="rclcpp_components" exec="component_container" name="image_container" namespace="">
+        <!-- intra-process image publisher -->
+        <composable_node pkg="zero_copy_data_transport" plugin="intraproc::ImagePublisher" name="image_publisher" namespace="">
+            <param name="log_to_console" value="$(var log_to_console)"/>
+            <param name="image_path" value="$(var image_path)"/>
+            <extra_arg name="use_intra_process_comms" value="true" />
+        </composable_node>
+
+        <!-- intra-process image subscriber -->
+        <composable_node pkg="zero_copy_data_transport" plugin="intraproc::ImageSubscriber" name="image_subscriber" namespace="">
+            <param name="log_to_csv" value="$(var log_to_csv)"/>
+            <param name="log_to_console" value="$(var log_to_console)"/>
+            <extra_arg name="use_intra_process_comms" value="true" />
+        </composable_node>
+    </node_container>
+
+</launch>

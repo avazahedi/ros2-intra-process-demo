@@ -1,0 +1,18 @@
+<launch>
+    <arg name="image_path" default="1920x1080.png"/>
+    <arg name="log_to_console" default="false"/>
+    <arg name="log_to_csv" default="false"/>
+
+    <!-- image publisher -->
+    <node pkg="regular_data_transport" exec="image_publisher" name="image_publisher">
+        <param name="log_to_console" value="$(var log_to_console)"/>
+        <param name="image_path" value="$(var image_path)"/>
+    </node>
+
+    <!-- image subscriber -->
+    <node pkg="regular_data_transport" exec="image_subscriber" name="image_subscriber">
+        <param name="log_to_csv" value="$(var log_to_csv)"/>
+        <param name="log_to_console" value="$(var log_to_console)"/>
+    </node>
+
+</launch>
